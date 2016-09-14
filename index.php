@@ -4,6 +4,6 @@
         <title>TicTacToe</title>
     </head>
     <body>
-        <h1>TicTacToe! </h1>
+        <h1>TicTacToe!</h1>
     </body>
 </html>
