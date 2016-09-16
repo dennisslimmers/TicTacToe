@@ -9,20 +9,20 @@
             }
         </style>
         <script type="text/javascript" src="assets/scripts/jquery-3.1.0.min.js"></script>
-        <script type="text/javascript" src="assets/scripts/script.js"></script>
     </head>
     <body>
         <h1>TicTacToe!</h1>
-        <button></button>
-        <button></button>
-        <button></button>
+        <button id="1"></button>
+        <button id="2"></button>
+        <button id="3"></button>
         <br>
-        <button></button>
-        <button></button>
-        <button></button>
+        <button id="4"></button>
+        <button id="5"></button>
+        <button id="6"></button>
         <br>
-        <button></button>
-        <button></button>
-        <button></button>
+        <button id="7"></button>
+        <button id="8"></button>
+        <button id="9"></button>
     </body>
+    <script type="text/javascript" src="assets/scripts/script.js"></script>
 </html>
