@@ -1,3 +1,7 @@
+/**
+ * Created by denni on 14-9-2016.
+ */
+boardState = [0,0,0,0,0,0,0,0,0];
 var playerWinOptions = [];
 var aiWinOptions = [];
 
@@ -16,18 +20,26 @@ playerWinOptions[8] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
 
 //AI
 //Diagonal
-aiWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
-aiWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
-aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 1, 1, 1];
-//Oblique
-aiWinOptions[3] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-aiWinOptions[5] = [0, 0, 1, 0, 1, 0, 1, 0, 0];
-//Vertical
-aiWinOptions[6] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
-aiWinOptions[7] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
-aiWinOptions[8] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
+// aiWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
+// aiWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
+// aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 1, 1, 1];
+// //Oblique
+// aiWinOptions[3] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+// aiWinOptions[5] = [0, 0, 1, 0, 1, 0, 1, 0, 0];
+// //Vertical
+// aiWinOptions[6] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
+// aiWinOptions[7] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
+// aiWinOptions[8] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
 
-$(document).ready(function () {
-    console.log(playerWinOptions);
-    console.log(aiWinOptions);
+function pushBoardState(id) {
+    boardState[id - 1] = 1;
+
+    $("#buttonId").val(id);
+}
+
+$("form").submit(function (event) {
+    $("#boardState").val(JSON.stringify(boardState));
+    console.log($("#boardState").val());
+
+    // event.preventDefault();
 });
