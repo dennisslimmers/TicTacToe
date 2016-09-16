@@ -31,15 +31,21 @@ playerWinOptions[8] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
 // aiWinOptions[7] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
 // aiWinOptions[8] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
 
-function pushBoardState(id) {
+function pushBoardState(id, e) {
     boardState[id - 1] = 1;
 
     $("#buttonId").val(id);
 }
 
-$("form").submit(function (event) {
-    $("#boardState").val(JSON.stringify(boardState));
-    console.log($("#boardState").val());
-
-    // event.preventDefault();
-});
+    var page = 'test.php';
+    $.ajax({
+        url: page,
+        type: "post",
+        data: {id:boardState},
+        async: true,
+        success: function (data) {
+            console.log(data);
+        }
+    });
+    e.preventDefault()
+}
