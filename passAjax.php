@@ -1,6 +1,6 @@
 <?php
 session_start();
 
-include_once'ajax.php';
+include 'ajax.php';
 $ajax = new ajax($_POST);
 ?>
