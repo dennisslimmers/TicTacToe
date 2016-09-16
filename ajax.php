@@ -4,8 +4,6 @@ class ajax {
     private $aiWinOptions = [];
 
     public function __construct($post) {
-	    $this->pushBoardState($post);
-
         /*
          * Diagonal
          */
@@ -25,6 +23,8 @@ class ajax {
         $this->aiWinOptions[5] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
         $this->aiWinOptions[6] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
         $this->aiWinOptions[7] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
+
+	    $this->pushBoardState($post);
     }
 
     public function pushBoardState($post) {
