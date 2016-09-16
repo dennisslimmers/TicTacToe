@@ -8,6 +8,8 @@
                 width: 60px;
             }
         </style>
+        <script type="text/javascript" src="assets/scripts/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="assets/scripts/script.js"></script>
     </head>
     <body>
         <h1>TicTacToe!</h1>
