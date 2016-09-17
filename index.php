@@ -23,14 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <html lang="nl">
     <head>
         <title>TicTacToe</title>
-        <!-- TODO: Move style to seperate stylesheet -->
-        <style>
-            button {
-                height: 60px;
-                width: 60px;
-            }
-        </style>
         <script type="text/javascript" src="assets/scripts/jquery-3.1.0.min.js"></script>
+        <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
         <h1>TicTacToe!</h1>
@@ -47,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <button id="9" onclick="pushBoardState(9, event);"></button>
 
         <!-- TODO: Are these input tags still necessary? -->
-        <input id="boardState" type="hidden" value="<?php echo implode($_SESSION['boardState']); ?>" name="boardState">
-        <input id="buttonId" type="hidden" value="" name="buttonId">
-        <br>
+<!--        <input id="boardState" type="hidden" value="--><?php //echo implode($_SESSION['boardState']); ?><!--" name="boardState">-->
+<!--        <input id="buttonId" type="hidden" value="" name="buttonId">-->
+<!--        <br>-->
         <form action="destroy.php">
             <input type="submit" value="destroy sessions">
         </form>
