@@ -28,17 +28,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </head>
     <body>
         <h1>TicTacToe!</h1>
-        <button id="1" onclick="pushBoardState(1, event);"></button>
-        <button id="2" onclick="pushBoardState(2, event);"></button>
-        <button id="3" onclick="pushBoardState(3, event);"></button>
+        <button id="1" onclick="pushBoardState(1, event);">-</button>
+        <button id="2" onclick="pushBoardState(2, event);">-</button>
+        <button id="3" onclick="pushBoardState(3, event);">-</button>
         <br>
-        <button id="4" onclick="pushBoardState(4, event);"></button>
-        <button id="5" onclick="pushBoardState(5, event);"></button>
-        <button id="6" onclick="pushBoardState(6, event);"></button>
+        <button id="4" onclick="pushBoardState(4, event);">-</button>
+        <button id="5" onclick="pushBoardState(5, event);">-</button>
+        <button id="6" onclick="pushBoardState(6, event);">-</button>
         <br>
-        <button id="7" onclick="pushBoardState(7, event);"></button>
-        <button id="8" onclick="pushBoardState(8, event);"></button>
-        <button id="9" onclick="pushBoardState(9, event);"></button>
+        <button id="7" onclick="pushBoardState(7, event);">-</button>
+        <button id="8" onclick="pushBoardState(8, event);">-</button>
+        <button id="9" onclick="pushBoardState(9, event);">-</button>
 
         <!-- TODO: Are these input tags still necessary? -->
 <!--        <input id="boardState" type="hidden" value="--><?php //echo implode($_SESSION['boardState']); ?><!--" name="boardState">-->
