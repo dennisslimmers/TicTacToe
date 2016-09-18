@@ -5,23 +5,23 @@ class ajax {
 	private $playerWinOptions = [];
 	
 	public function __construct($post) {
-		$this->aiWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
-		$this->aiWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
-		$this->aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 1, 1, 1];
-		$this->aiWinOptions[3] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-		$this->aiWinOptions[4] = [0, 0, 1, 0, 1, 0, 1, 0, 0];
-		$this->aiWinOptions[5] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
-		$this->aiWinOptions[6] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
-		$this->aiWinOptions[7] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
+		$this->aiWinOptions[0] = [2, 2, 2, 0, 0, 0, 0, 0, 0];
+		$this->aiWinOptions[1] = [0, 0, 0, 2, 2, 2, 0, 0, 0];
+		$this->aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 2, 2, 2];
+		$this->aiWinOptions[3] = [2, 0, 0, 0, 2, 0, 0, 0, 2];
+		$this->aiWinOptions[4] = [0, 0, 2, 0, 2, 0, 2, 0, 0];
+		$this->aiWinOptions[5] = [2, 0, 0, 2, 0, 0, 2, 0, 0];
+		$this->aiWinOptions[6] = [0, 2, 0, 0, 2, 0, 0, 2, 0];
+		$this->aiWinOptions[7] = [0, 0, 2, 0, 0, 2, 0, 0, 2];
 		
-		$this->playerWinOptions[0] = [2, 2, 2, 0, 0, 0, 0, 0, 0];
-		$this->playerWinOptions[1] = [0, 0, 0, 2, 2, 2, 0, 0, 0];
-		$this->playerWinOptions[2] = [0, 0, 0, 0, 0, 0, 2, 2, 2];
-		$this->playerWinOptions[3] = [2, 0, 0, 0, 2, 0, 0, 0, 2];
-		$this->playerWinOptions[4] = [0, 0, 2, 0, 2, 0, 2, 0, 0];
-		$this->playerWinOptions[5] = [2, 0, 0, 2, 0, 0, 2, 0, 0];
-		$this->playerWinOptions[6] = [0, 2, 0, 0, 2, 0, 0, 2, 0];
-		$this->playerWinOptions[7] = [0, 0, 2, 0, 0, 2, 0, 0, 2];
+		$this->playerWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
+		$this->playerWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
+		$this->playerWinOptions[2] = [0, 0, 0, 0, 0, 0, 1, 1, 1];
+		$this->playerWinOptions[3] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+		$this->playerWinOptions[4] = [0, 0, 1, 0, 1, 0, 1, 0, 0];
+		$this->playerWinOptions[5] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
+		$this->playerWinOptions[6] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
+		$this->playerWinOptions[7] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
 		
 		$this->pushBoardState($post);
 	}
@@ -30,6 +30,7 @@ class ajax {
 		/*
 		 * TODO: Determine whose turn it is, can also be done in index.php
 		 * This you can simply do with a bool in javascript. done?
+		 * TODO: We also need a PHP variant
 		 * 
 		 * TODO: Implement Minimax algorithm obviously
 		 * TODO: Find a way to send data from PHP back to Javascript (AJAX???)
@@ -45,8 +46,7 @@ class ajax {
 	        }
 		*/
 		
-		echo $this->checkWinState($post['id']);
-		/* echo "\n"; means new line in console log javascript*/
+		echo $this->checkWinState($post['boardState']);
 		echo "\n";
 		
 		$this->debugBoardState($post);
@@ -55,8 +55,8 @@ class ajax {
 	public function checkWinState($post) {
 		/*
         * Check all options for ai, player win or draw.
-		* Ai win: 1
-		* Player win: 2
+		* Ai win: 2
+		* Player win: 1
 		* Draw: 3
 		* No win or draw: 0
         */
@@ -65,32 +65,34 @@ class ajax {
 		$nummer = "";
 		foreach ($this->aiWinOptions as $state) {
 			for ($ii = 0; $ii < count($state); $ii++) {
-				if ($state[$ii] == 1 && $post[$ii] == 1) {
+				if ($state[$ii] == 2 && $post[$ii] == 2) {
 					$nummer .= $state[$ii];
 					if (strlen($nummer) == 3) {
-						return 1;
+						return 2;
 					}
 				}
 			}
+
 			$nummer = "";
 		}
 		
 		/* Check all win options for player. */
 		$nummer = "";
 		foreach ($this->playerWinOptions as $state) {
-			for ($iii = 0; $iii < count($state); $iii++) {
-				if ($state[$iii] == 2 && $post[$iii] == 2) {
-					$nummer .= $state[$iii];
-					//					echo "Number: " . $nummer . "\n";
+			for ($nn = 0; $nn < count($state); $nn++) {
+				if ($state[$nn] == 1 && $post[$nn] == 1) {
+					$nummer .= $state[$nn];
 					if (strlen($nummer) == 3) {
-						return 2;
+						return 1;
 					}
 				}
 			}
+
 			$nummer = "";
 		}
 		
 		/* Check for draw. */
+		/* TODO: It says check for draw but wasn't the value of 'draw' 3?*/
 		foreach ($post as $id) {
 			if ($id == 0) {
 				return 0;
@@ -102,12 +104,11 @@ class ajax {
 	}
 	
 	public function debugBoardState($post) {
-		/*
-        * echo boardState in console log
-        */
-		foreach ($post['id'] as $id) {
-			echo $id;
+		/* echo boardState in console log */
+		foreach ($post['boardState'] as $state) {
+			echo $state;
 		}
+
 		echo "\n";
 	}
 }

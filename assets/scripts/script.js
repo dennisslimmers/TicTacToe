@@ -4,19 +4,20 @@ aiTurn = false;
 function pushBoardState(id, e) {
     var page = 'passAjax.php';
     if (aiTurn) {
+        // TODO: This must not be done on a click event
         $("#"+ id).html("X");
-        boardState[id - 1] = 1;
+        boardState[id - 1] = 2;
         aiTurn = false;
     } else {
         $("#"+ id).html("O");
-        boardState[id - 1] = 2;
+        boardState[id - 1] = 1;
         aiTurn = true;
     }
     
     $.ajax({
         url: page,
         type: "post",
-        data: {id:boardState},
+        data: {boardState:boardState},
         async: true,
         success: function (data) {
             console.log(data);
