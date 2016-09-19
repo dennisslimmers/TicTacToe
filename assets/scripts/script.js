@@ -17,7 +17,7 @@ function pushBoardState(id, e) {
     $.ajax({
         url: page,
         type: "post",
-        data: {boardState:boardState},
+        data: {boardState:boardState, aiTurn: aiTurn},
         async: true,
         success: function (data) {
             console.log(data);

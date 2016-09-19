@@ -33,24 +33,57 @@ class ajax {
 		 * TODO: We also need a PHP variant
 		 * 
 		 * TODO: Implement Minimax algorithm obviously
-		 * TODO: Find a way to send data from PHP back to Javascript (AJAX???)
-		 * This already happens on ajax call.
-		 * The data you get back is "data":
-			success: function (data) {
-	            console.log(data);
-	        }
-			
-			Now this can be used to store in a var like:
-			success: function (data) {
-	            var backData = data;
-	        }
-		*/
-		
-		echo $this->checkWinState($post['boardState']);
-		echo "\n";
-		
-		$this->debugBoardState($post);
+		 *
+		 */
+
+//
+//		echo $this->checkWinState($post['boardState']);
+//		echo "\n";
+//
+//		$this->debugBoardState($post);
+        echo "\n";
+        $this->minimax($post['boardState'], 4 ,$post['aiTurn']);
 	}
+
+    public function minimax($boardState, $depth, $aiTurn) {
+        /* Implementation of minimax (The right implementation???) */
+
+        /*
+         * Build board tree
+         * Go over every possible move the human/computer can make
+         * and save this data in the boardTree variable.
+         *
+         */
+
+        $boardTree = [];
+        $turn = $aiTurn ? 2 : 1;
+
+        $this->debugBoardState($_POST);
+        echo "\n";
+
+        for ($ii = 0; $ii < count($boardState); $ii++) {
+            if ($boardState[$ii] != 1 && $boardState[$ii] != 2) {
+                $memorizeState = $boardState;
+
+                $boardState[$ii] = 2;
+                $boardTree[$ii] = $boardState;
+
+                if ($memorizeState[$ii] == 0) {
+                    $boardState[$ii] = 0;
+                } else if ($memorizeState[$ii] == 1) {
+                    $boardState[$ii] = 1;
+                }
+            }
+        }
+
+        foreach ($boardTree as $tree) {
+            foreach ($tree as $state) {
+                echo $state;
+            }
+
+            echo "\n";
+        }
+    }
 	
 	public function checkWinState($post) {
 		/*
@@ -105,6 +138,9 @@ class ajax {
 	
 	public function debugBoardState($post) {
 		/* echo boardState in console log */
+        echo "A.I turn?: " . $post['aiTurn'];
+        echo "\n";
+
 		foreach ($post['boardState'] as $state) {
 			echo $state;
 		}
