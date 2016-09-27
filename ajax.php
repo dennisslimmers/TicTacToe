@@ -31,7 +31,7 @@ class ajax {
 		 * TODO: Determine whose turn it is, can also be done in index.php
 		 * This you can simply do with a bool in javascript. done?
 		 * TODO: We also need a PHP variant
-		 * 
+		 *
 		 * TODO: Implement Minimax algorithm obviously
 		 *
 		 */
@@ -42,48 +42,145 @@ class ajax {
 //
 //		$this->debugBoardState($post);
         echo "\n";
-        $this->minimax($post['boardState'], 4 ,$post['aiTurn']);
+        $this->minimax($post['boardState'], $post['aiTurn']);
 	}
 
-    public function minimax($boardState, $depth, $aiTurn) {
+    public function minimax($boardState, $aiTurn) {
         /* Implementation of minimax (The right implementation???) */
 
-        /*
+		/*
          * Build board tree
          * Go over every possible move the human/computer can make
          * and save this data in the boardTree variable.
          *
          */
 
-        $boardTree = [];
-        $turn = $aiTurn ? 2 : 1;
+//        $this->debugBoardState($_POST);
+//        echo "\n";
 
-        $this->debugBoardState($_POST);
-        echo "\n";
+		$aiMove = [];
 
-        for ($ii = 0; $ii < count($boardState); $ii++) {
-            if ($boardState[$ii] != 1 && $boardState[$ii] != 2) {
-                $memorizeState = $boardState;
+		$boardTree = $this->buildBoardTree($boardState, $aiTurn);
+		$terminatingNode = $this->findTerminatingNode($boardTree);
+//
+//		echo "Terminating node: ";
+		if (!empty($terminatingNode)) {
+			$aiMove = $terminatingNode;
+		} else {
+			$aiMove = $this->returnMoveLayer2($boardTree);
+		}
 
-                $boardState[$ii] = 2;
-                $boardTree[$ii] = $boardState;
+		$this->dumpBoardState($aiMove);
 
-                if ($memorizeState[$ii] == 0) {
-                    $boardState[$ii] = 0;
-                } else if ($memorizeState[$ii] == 1) {
-                    $boardState[$ii] = 1;
-                }
-            }
-        }
-
-        foreach ($boardTree as $tree) {
-            foreach ($tree as $state) {
-                echo $state;
-            }
-
-            echo "\n";
-        }
+//		foreach ($boardTree as $tree) {
+//			foreach ($tree as $state) {
+//				echo "\n";
+//
+//				foreach ($state as $num) {
+//					echo $num;
+//				}
+//			}
+//
+//			echo "\n";
+//		}
     }
+
+	public function buildBoardTree($boardState, $aiTurn) {
+		$turn = $aiTurn ? 2 : 1;
+		$boardTree = [];
+
+
+		for ($ii = 0; $ii < count($boardState); $ii++) {
+			if ($boardState[$ii] == 0) {
+				$memorizeState = $boardState;
+
+				$boardState[$ii] = 2;
+				$boardTree[0][] = $boardState;
+
+				if ($memorizeState[$ii] == 0) {
+					$boardState[$ii] = 0;
+				} else if ($memorizeState[$ii] == 1) {
+					$boardState[$ii] = 1;
+				}
+			}
+		}
+
+
+		foreach ($boardTree[0] as $state) {
+			for ($hh = 0; $hh < count($state); $hh++) {
+				if ($state[$hh] == 0) {
+					$memorizeState = $state;
+
+					$state[$hh] = 1;
+					$boardTree[1][] = $state;
+
+					if ($memorizeState[$hh] == 0) {
+						$state[$hh] = 0;
+					} else if ($memorizeState[$hh] == 1) {
+						$state[$hh] = 1;
+					}
+				}
+			}
+		}
+
+		return $boardTree;
+	}
+
+	public function findTerminatingNode($boardTree) {
+		foreach ($boardTree as $tree) {
+			foreach ($tree as $state) {
+				for ($ii = 0; $ii < count($state); $ii++) {
+					$terminatingNode = $this->mapStateOnTerminatingOptions($state);
+
+					if (!empty($terminatingNode)) {
+						return $terminatingNode;
+					}
+ 				}
+			}
+		}
+
+		return null;
+	}
+
+	public function mapStateOnTerminatingOptions($state) {
+		$winOption = [];
+		$loseOption = [];
+
+		for ($ii = 0; $ii < count($state); $ii++) {
+			if ($state[$ii] == 1) {
+				$winOption[$ii] = 0;
+			} else {
+				$winOption[$ii] = $state[$ii];
+			}
+		}
+
+		foreach ($this->aiWinOptions as $option) {
+			if ($winOption == $option) {
+				return $winOption;
+			}
+		}
+
+		for ($ii = 0; $ii < count($state); $ii++) {
+			if ($state[$ii] == 2) {
+				$loseOption[$ii] = 0;
+			} else {
+				$loseOption[$ii] = $state[$ii];
+			}
+		}
+
+		foreach ($this->playerWinOptions as $option) {
+			if ($loseOption == $option) {
+				return $loseOption;
+			}
+		}
+
+		return null;
+	}
+
+	public function returnMoveLayer2($boardTree) {
+		$index = array_rand($boardTree[0]);
+		return $boardTree[0][$index];
+	}
 	
 	public function checkWinState($post) {
 		/*
@@ -138,11 +235,18 @@ class ajax {
 	
 	public function debugBoardState($post) {
 		/* echo boardState in console log */
-        echo "A.I turn?: " . $post['aiTurn'];
         echo "\n";
 
 		foreach ($post['boardState'] as $state) {
 			echo $state;
+		}
+
+		echo "\n";
+	}
+
+	public function dumpBoardState ($state) {
+		foreach($state as $num) {
+			echo $num;
 		}
 
 		echo "\n";

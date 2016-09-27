@@ -3,12 +3,7 @@ aiTurn = false;
 
 function pushBoardState(id, e) {
     var page = 'passAjax.php';
-    if (aiTurn) {
-        // TODO: This must not be done on a click event
-        $("#"+ id).html("X");
-        boardState[id - 1] = 2;
-        aiTurn = false;
-    } else {
+    if (!aiTurn) {
         $("#"+ id).html("O");
         boardState[id - 1] = 1;
         aiTurn = true;
@@ -20,10 +15,53 @@ function pushBoardState(id, e) {
         data: {boardState:boardState, aiTurn: aiTurn},
         async: true,
         success: function (data) {
-            console.log(data);
-            // document.write(data);
+            var aiId = "";
+            var aiMove = [];
+            aiMove = data;
+
+            makeMove(aiMove);
+            setBoardStateToAiMove(aiMove, boardState);
+
+            aiTurn = false;
+
+            // console.log(boardState);
         }
     });
 
-    e.preventDefault()
+    e.preventDefault();
 }
+
+function makeMove(aiMove) {
+    idsToCheck = [];
+    aiId = "";
+
+    for (var ii = 0; ii < aiMove.length; ii++) {
+        if (aiMove[ii] == "2") {
+            if ($("#"+ aiMove[ii]).html != "X") {
+                idsToCheck.push(ii);
+            }
+        }
+    }
+
+    idsToCheck.forEach(function(id){
+        var selector = $("#"+ id);
+
+        if (selector.html != "X") {
+            selector.html("X");
+        }
+
+        var index = idsToCheck.indexOf(id);
+
+        if (index > -1) {
+            idsToCheck.splice(index, 1);
+        }
+    });
+}
+
+function setBoardStateToAiMove(aiMove, boardState) {
+    for (var ii = 0; ii < boardState.length; ii++) {
+        boardState[ii - 1] = parseInt(aiMove[ii]);
+    }
+}
+
+

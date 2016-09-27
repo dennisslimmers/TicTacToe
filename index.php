@@ -1,21 +1,6 @@
 <?php
+
 session_start();
-
-/* TODO: This has to be moved to the ajax class
- * TODO: Do we even need a boardstate saved in a session?
- * TODO: Do we even need a REQUEST_METHOD check now that AJAX is actually working properly?
-if (!isset($_SESSION["boardState"])) {
-    $_SESSION["boardState"] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-} else {
-    var_dump($_SESSION['boardState']);
-}
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $buttonId = $_POST['buttonId'];
-
-    $_SESSION['boardState'][$buttonId - 1] = 1;
-}
-*/
 
 ?>
 
@@ -40,10 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <button id="8" onclick="pushBoardState(8, event);">-</button>
         <button id="9" onclick="pushBoardState(9, event);">-</button>
 
-        <!-- TODO: Are these input tags still necessary? -->
-<!--        <input id="boardState" type="hidden" value="--><?php //echo implode($_SESSION['boardState']); ?><!--" name="boardState">-->
-<!--        <input id="buttonId" type="hidden" value="" name="buttonId">-->
-<!--        <br>-->
         <form action="destroy.php">
             <input type="submit" value="destroy sessions">
         </form>
