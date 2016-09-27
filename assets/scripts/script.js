@@ -24,7 +24,7 @@ function pushBoardState(id, e) {
 
             aiTurn = false;
 
-            // console.log(boardState);
+            console.log(boardState);
         }
     });
 
@@ -37,16 +37,16 @@ function makeMove(aiMove) {
 
     for (var ii = 0; ii < aiMove.length; ii++) {
         if (aiMove[ii] == "2") {
-            if ($("#"+ aiMove[ii]).html != "X") {
+            if ($("#" + ii).html() != "X") {
                 idsToCheck.push(ii);
             }
         }
     }
 
-    idsToCheck.forEach(function(id){
+    idsToCheck.forEach(function(id) {
         var selector = $("#"+ id);
 
-        if (selector.html != "X") {
+        if (selector.html() != "X") {
             selector.html("X");
         }
 
@@ -59,7 +59,7 @@ function makeMove(aiMove) {
 }
 
 function setBoardStateToAiMove(aiMove, boardState) {
-    for (var ii = 0; ii < boardState.length; ii++) {
+    for (var ii = 1; ii < boardState.length + 1; ii++) {
         boardState[ii - 1] = parseInt(aiMove[ii]);
     }
 }
