@@ -1,14 +1,4 @@
-aiWinOptions = [];
 playerWinOptions = [];
-
-aiWinOptions[0] = [2, 2, 2, 0, 0, 0, 0, 0, 0];
-aiWinOptions[1] = [0, 0, 0, 2, 2, 2, 0, 0, 0];
-aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 2, 2, 2];
-aiWinOptions[3] = [2, 0, 0, 0, 2, 0, 0, 0, 2];
-aiWinOptions[4] = [0, 0, 2, 0, 2, 0, 2, 0, 0];
-aiWinOptions[5] = [2, 0, 0, 2, 0, 0, 2, 0, 0];
-aiWinOptions[6] = [0, 2, 0, 0, 2, 0, 0, 2, 0];
-aiWinOptions[7] = [0, 0, 2, 0, 0, 2, 0, 0, 2];
 
 playerWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
 playerWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
@@ -40,13 +30,16 @@ function pushBoardState(id, e) {
             var aiMove = [];
             aiMove = data;
 
-            makeMove(aiMove);
             setBoardStateToAiMove(aiMove, boardState);
-            isLosingState(aiMove);
 
-            aiTurn = false;
+            if (!isLosingState(boardState))
+                makeMove(aiMove);
+            else
+                makeDefendingMove(aiMove);
+
 
             console.log(boardState);
+            aiTurn = false;
         }
     });
 
@@ -54,30 +47,44 @@ function pushBoardState(id, e) {
 }
 
 function makeMove(aiMove) {
-    idsToCheck = [];
-    aiId = "";
+    if (!isLosingState(boardState)) {
+        idsToCheck = [];
+        aiId = "";
 
+        for (var ii = 0; ii < aiMove.length; ii++) {
+            if (aiMove[ii] == "2") {
+                if ($("#" + ii).html() != "X") {
+                    idsToCheck.push(ii);
+                }
+            }
+        }
+
+        idsToCheck.forEach(function(id) {
+            var selector = $("#"+ id);
+
+            if (selector.html() != "X") {
+                selector.html("X");
+            }
+
+            var index = idsToCheck.indexOf(id);
+
+            if (index > -1) {
+                idsToCheck.splice(index, 1);
+            }
+        });
+    }
+}
+
+function makeDefendingMove(aiMove) {
     for (var ii = 0; ii < aiMove.length; ii++) {
-        if (aiMove[ii] == "2") {
-            if ($("#" + ii).html() != "X") {
-                idsToCheck.push(ii);
+        var selector = $("#"+ ii);
+
+        if (aiMove[ii] == 1) {
+            if (selector.html() != "O") {
+                selector.html("X");
             }
         }
     }
-
-    idsToCheck.forEach(function(id) {
-        var selector = $("#"+ id);
-
-        if (selector.html() != "X") {
-            selector.html("X");
-        }
-
-        var index = idsToCheck.indexOf(id);
-
-        if (index > -1) {
-            idsToCheck.splice(index, 1);
-        }
-    });
 }
 
 function setBoardStateToAiMove(aiMove, boardState) {
@@ -86,16 +93,40 @@ function setBoardStateToAiMove(aiMove, boardState) {
     }
 }
 
-function isLosingState(aiMove) {
+function isLosingState(boardState) {
     var isLosingState = false;
 
-    for (var ii = 0; ii < aiMove.length; ii++) {
-        if (aiMove[ii] == "2") {
-            aiMove[ii] = "0";
+    for (ii = 0; ii < playerWinOptions.length; ii++) {
+        if (boardState.equals(playerWinOptions[ii])) {
+            isLosingState = true;
         }
     }
 
-    console.log(aiMove);
+    return isLosingState;
 }
+
+Array.prototype.equals = function equals (array) {
+    if (!array) {
+        return false;
+    }
+
+    if (this.length != array.length) {
+        return false;
+    }
+
+    for (var i = 0, l = this.length; i < l; i++) {
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            if (!this[i].equals(array[i])) {
+                return false;
+            }
+        }
+
+        else if (this[i] != array[i]) {
+            return false;
+        }
+    }
+
+    return true;
+};
 
 
