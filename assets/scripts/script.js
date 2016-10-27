@@ -1,3 +1,24 @@
+aiWinOptions = [];
+playerWinOptions = [];
+
+aiWinOptions[0] = [2, 2, 2, 0, 0, 0, 0, 0, 0];
+aiWinOptions[1] = [0, 0, 0, 2, 2, 2, 0, 0, 0];
+aiWinOptions[2] = [0, 0, 0, 0, 0, 0, 2, 2, 2];
+aiWinOptions[3] = [2, 0, 0, 0, 2, 0, 0, 0, 2];
+aiWinOptions[4] = [0, 0, 2, 0, 2, 0, 2, 0, 0];
+aiWinOptions[5] = [2, 0, 0, 2, 0, 0, 2, 0, 0];
+aiWinOptions[6] = [0, 2, 0, 0, 2, 0, 0, 2, 0];
+aiWinOptions[7] = [0, 0, 2, 0, 0, 2, 0, 0, 2];
+
+playerWinOptions[0] = [1, 1, 1, 0, 0, 0, 0, 0, 0];
+playerWinOptions[1] = [0, 0, 0, 1, 1, 1, 0, 0, 0];
+playerWinOptions[2] = [0, 0, 0, 0, 0, 0, 1, 1, 1];
+playerWinOptions[3] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+playerWinOptions[4] = [0, 0, 1, 0, 1, 0, 1, 0, 0];
+playerWinOptions[5] = [1, 0, 0, 1, 0, 0, 1, 0, 0];
+playerWinOptions[6] = [0, 1, 0, 0, 1, 0, 0, 1, 0];
+playerWinOptions[7] = [0, 0, 1, 0, 0, 1, 0, 0, 1];
+
 boardState = [0,0,0,0,0,0,0,0,0];
 aiTurn = false;
 
@@ -21,6 +42,7 @@ function pushBoardState(id, e) {
 
             makeMove(aiMove);
             setBoardStateToAiMove(aiMove, boardState);
+            isLosingState(aiMove);
 
             aiTurn = false;
 
@@ -62,6 +84,18 @@ function setBoardStateToAiMove(aiMove, boardState) {
     for (var ii = 1; ii < boardState.length + 1; ii++) {
         boardState[ii - 1] = parseInt(aiMove[ii]);
     }
+}
+
+function isLosingState(aiMove) {
+    var isLosingState = false;
+
+    for (var ii = 0; ii < aiMove.length; ii++) {
+        if (aiMove[ii] == "2") {
+            aiMove[ii] = "0";
+        }
+    }
+
+    console.log(aiMove);
 }
 
 

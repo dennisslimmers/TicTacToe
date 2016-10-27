@@ -27,20 +27,6 @@ class ajax {
 	}
 	
 	public function pushBoardState($post) {
-		/*
-		 * TODO: Determine whose turn it is, can also be done in index.php
-		 * This you can simply do with a bool in javascript. done?
-		 * TODO: We also need a PHP variant
-		 *
-		 * TODO: Implement Minimax algorithm obviously
-		 *
-		 */
-
-//
-//		echo $this->checkWinState($post['boardState']);
-//		echo "\n";
-//
-//		$this->debugBoardState($post);
         echo "\n";
         $this->minimax($post['boardState'], $post['aiTurn']);
 	}
@@ -55,15 +41,11 @@ class ajax {
          *
          */
 
-//        $this->debugBoardState($_POST);
-//        echo "\n";
-
 		$aiMove = [];
 
 		$boardTree = $this->buildBoardTree($boardState, $aiTurn);
 		$terminatingNode = $this->findTerminatingNode($boardTree);
-//
-//		echo "Terminating node: ";
+		
 		if (!empty($terminatingNode)) {
 			$aiMove = $terminatingNode;
 		} else {
@@ -71,18 +53,6 @@ class ajax {
 		}
 
 		$this->dumpBoardState($aiMove);
-
-//		foreach ($boardTree as $tree) {
-//			foreach ($tree as $state) {
-//				echo "\n";
-//
-//				foreach ($state as $num) {
-//					echo $num;
-//				}
-//			}
-//
-//			echo "\n";
-//		}
     }
 
 	public function buildBoardTree($boardState, $aiTurn) {
