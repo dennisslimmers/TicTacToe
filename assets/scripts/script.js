@@ -29,7 +29,7 @@ function pushBoardState(id, e) {
             var aiId = "";
             var aiMove = [];
             aiMove = data;
-
+            console.log(data);
             setBoardStateToAiMove(aiMove, boardState);
 
             if (!isLosingState(boardState))

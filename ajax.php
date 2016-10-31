@@ -44,7 +44,7 @@ class ajax {
 		$aiMove = [];
 
 		$boardTree = $this->buildBoardTree($boardState, $aiTurn);
-		$terminatingNode = $this->findTerminatingNode($boardTree);
+		$terminatingNode = $this->findTerminatingNode($boardTree, $boardState);
 		
 		if (!empty($terminatingNode)) {
 			$aiMove = $terminatingNode;
@@ -96,11 +96,11 @@ class ajax {
 		return $boardTree;
 	}
 
-	public function findTerminatingNode($boardTree) {
+	public function findTerminatingNode($boardTree, $boardState) {
 		foreach ($boardTree as $tree) {
 			foreach ($tree as $state) {
 				for ($ii = 0; $ii < count($state); $ii++) {
-					$terminatingNode = $this->mapStateOnTerminatingOptions($state);
+					$terminatingNode = $this->mapStateOnTerminatingOptions($state, $boardState);
 
 					if (!empty($terminatingNode)) {
 						return $terminatingNode;
@@ -112,10 +112,10 @@ class ajax {
 		return null;
 	}
 
-	public function mapStateOnTerminatingOptions($state) {
+	public function mapStateOnTerminatingOptions($state, $boardState) {
 		$winOption = [];
 		$loseOption = [];
-
+		//$this->dumpBoardState($boardState);
 		for ($ii = 0; $ii < count($state); $ii++) {
 			if ($state[$ii] == 1) {
 				$winOption[$ii] = 0;
@@ -126,7 +126,13 @@ class ajax {
 
 		foreach ($this->aiWinOptions as $option) {
 			if ($winOption == $option) {
-				return $winOption;
+				for ($iii=0; $iii<count($option); $iii++) {
+					$this->dumpBoardState($option);
+					$this->dumpBoardState($boardState);
+					if ($option[$iii] == 2 && $boardState == 0)
+						$boardState[$iii] = 2;
+				}
+				return $boardState;
 			}
 		}
 
@@ -140,7 +146,13 @@ class ajax {
 
 		foreach ($this->playerWinOptions as $option) {
 			if ($loseOption == $option) {
-				return $loseOption;
+				for ($iii=0; $iii<count($option); $iii++) {
+					$this->dumpBoardState($option);
+					$this->dumpBoardState($boardState);
+					if ($option[$iii] == 1 && $boardState == 0)
+						$boardState[$iii] = 1;
+				}
+				return $boardState;
 			}
 		}
 
