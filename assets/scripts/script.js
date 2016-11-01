@@ -15,6 +15,9 @@ aiTurn = false;
 function pushBoardState(id, e) {
     var page = 'passAjax.php';
     if (!aiTurn) {
+        if ($("#"+ id).html()!='-') {
+            return false;
+        }
         $("#"+ id).html("O");
         boardState[id - 1] = 1;
         aiTurn = true;
@@ -30,6 +33,9 @@ function pushBoardState(id, e) {
             var aiMove = [];
             aiMove = data;
             console.log(data);
+            if (data % 1 !== 0) {
+                document.write(data);
+            }
             setBoardStateToAiMove(aiMove, boardState);
 
             if (!isLosingState(boardState))
@@ -37,8 +43,6 @@ function pushBoardState(id, e) {
             else
                 makeDefendingMove(aiMove);
 
-
-            console.log(boardState);
             aiTurn = false;
         }
     });

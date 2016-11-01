@@ -25,7 +25,7 @@ session_start();
         <button id="8" onclick="pushBoardState(8, event);">-</button>
         <button id="9" onclick="pushBoardState(9, event);">-</button>
 
-        <form action="destroy.php">
+        <form action="Win.php">
             <input type="submit" value="destroy sessions">
         </form>
     </body>

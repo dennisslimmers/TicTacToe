@@ -28,6 +28,15 @@ class ajax {
 	
 	public function pushBoardState($post) {
         echo "\n";
+		if ($this->checkWinState($post['boardState'])) {
+			$return =  $this->checkWinState($post['boardState']);
+			if ($return == 1) {
+				header('Location: Win.php');
+			} else {
+				header('Location: Lose.php');
+			}
+			exit;
+		}
         $this->minimax($post['boardState'], $post['aiTurn']);
 	}
 
@@ -52,7 +61,17 @@ class ajax {
 			$aiMove = $this->returnMoveLayer2($boardTree);
 		}
 
-		$this->dumpBoardState($aiMove);
+	    if ($this->checkWinState($aiMove)) {
+		    $return =  $this->checkWinState($aiMove);
+		    if ($return == 1) {
+			    header('Location: Win.php');
+		    } else {
+			    header('Location: Lose.php');
+		    }
+		    exit;
+	    } else {
+		    $this->dumpBoardState($aiMove);
+	    }
     }
 
 	public function buildBoardTree($boardState, $aiTurn) {
@@ -74,8 +93,10 @@ class ajax {
 				}
 			}
 		}
-
-
+		if (!isset($boardTree[0])) {
+			echo "<h1>Draw!</h1>";
+			exit;
+		}
 		foreach ($boardTree[0] as $state) {
 			for ($hh = 0; $hh < count($state); $hh++) {
 				if ($state[$hh] == 0) {
@@ -115,7 +136,7 @@ class ajax {
 	public function mapStateOnTerminatingOptions($state, $boardState) {
 		$winOption = [];
 		$loseOption = [];
-		//$this->dumpBoardState($boardState);
+
 		for ($ii = 0; $ii < count($state); $ii++) {
 			if ($state[$ii] == 1) {
 				$winOption[$ii] = 0;
@@ -127,9 +148,7 @@ class ajax {
 		foreach ($this->aiWinOptions as $option) {
 			if ($winOption == $option) {
 				for ($iii=0; $iii<count($option); $iii++) {
-					$this->dumpBoardState($option);
-					$this->dumpBoardState($boardState);
-					if ($option[$iii] == 2 && $boardState == 0)
+					if ($option[$iii] == 2 && $boardState[$iii] == 0)
 						$boardState[$iii] = 2;
 				}
 				return $boardState;
@@ -147,10 +166,8 @@ class ajax {
 		foreach ($this->playerWinOptions as $option) {
 			if ($loseOption == $option) {
 				for ($iii=0; $iii<count($option); $iii++) {
-					$this->dumpBoardState($option);
-					$this->dumpBoardState($boardState);
-					if ($option[$iii] == 1 && $boardState == 0)
-						$boardState[$iii] = 1;
+					if ($option[$iii] == 1 && $boardState[$iii] == 0)
+						$boardState[$iii] = 2;
 				}
 				return $boardState;
 			}
@@ -169,7 +186,6 @@ class ajax {
         * Check all options for ai, player win or draw.
 		* Ai win: 2
 		* Player win: 1
-		* Draw: 3
 		* No win or draw: 0
         */
 		
@@ -212,7 +228,7 @@ class ajax {
 			}
 		}
 		
-		return 3;
+		return 0;
 	}
 	
 	public function debugBoardState($post) {
